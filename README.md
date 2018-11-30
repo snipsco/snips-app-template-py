@@ -1,4 +1,5 @@
 ## snips-app-template-py
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/snipsco/snips-app-template-py/blob/master/LICENSE)
 
 > This template is made for ***python 2.7***
 
@@ -197,3 +198,11 @@ pip install -r requirements.txt
 ## An Example APP
 
 A Joke App based on this template is documented [here](https://docs.snips.ai/guides/raspberry-pi-guides/create-an-app/python-template#example-joke-app).
+
+## Contributing
+
+Please see the [Contribution Guidelines](https://github.com/snipsco/snips-app-template-py/blob/master/CONTRIBUTING.md).
+
+## Copyright
+
+This library is provided by [Snips](https://www.snips.ai) as Open Source software. See [LICENSE](https://github.com/snipsco/snips-app-template-py/blob/master/LICENSE) for more information.
