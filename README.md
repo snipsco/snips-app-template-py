@@ -16,7 +16,7 @@ With a simple action, it can be written in the `action-app_example.py` file. How
 └── python2_rich                                
     ├── action-app_template.py          # main handler for intents
     ├── snipsTools.py                   # some useful tools
-    ├── config.ini                      # app configuration
+    ├── config.ini.default              # default app configuration
     ├── requirements.txt                # required dependencies
     └── setup.sh                        # setup script
 ```
