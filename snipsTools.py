@@ -28,6 +28,7 @@ class SnipsConfigParser(ConfigParser.SafeConfigParser):
         try:
             with open(configuration_file, 'w') as f:
                 conf_parser.write(f)
+                return True
         except (IOError, ConfigParser.Error) as e:
             print(e)
             return False
