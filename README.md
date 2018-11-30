@@ -13,7 +13,7 @@ Files listed below are required as a minimum construction, which ensures that th
 With a simple action, it can be written in the `action-app_example.py` file. However with some more complicated action code, it's better to have a specific class file for it.
 
 ```bash
-└── python2_rich                                
+└── snips-app-template-py                                
     ├── action-app_template.py          # main handler for intents
     ├── snipsTools.py                   # some useful tools
     ├── config.ini.default              # default app configuration
