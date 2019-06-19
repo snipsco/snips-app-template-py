@@ -3,14 +3,17 @@
 from snipsTools import SnipsConfigParser
 from hermes_python.hermes import Hermes
 
+# imported to get type check and IDE completion
+from hermes_python.ontology.dialogue.intent import IntentMessage
+
 CONFIG_INI = "config.ini"
 
 # If this skill is supposed to run on the satellite,
 # please get this mqtt connection info from <config.ini>
 # Hint: MQTT server is always running on the master device
-MQTT_IP_ADDR = "localhost"
-MQTT_PORT = 1883
-MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
+MQTT_IP_ADDR: str = "localhost"
+MQTT_PORT: int = 1883
+MQTT_ADDR: str = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
 
 class Template(object):
@@ -28,7 +31,11 @@ class Template(object):
         # start listening to MQTT
         self.start_blocking()
 
-    def intent_1_callback(self, hermes, intent_message):
+    @staticmethod
+    def intent_1_callback(self,
+                          hermes: Hermes,
+                          intent_message: IntentMessage):
+
         # terminate the session first if not continue
         hermes.publish_end_session(intent_message.session_id, "")
 
@@ -41,8 +48,13 @@ class Template(object):
                 intent_message.site_id,
                 "Action 1", "")
 
-    def intent_2_callback(self, hermes, intent_message):
+    @staticmethod
+    def intent_2_callback(self,
+                          hermes: Hermes,
+                          intent_message: IntentMessage):
+
         # terminate the session first if not continue
+        hermes.publish_end_session()
         hermes.publish_end_session(intent_message.session_id, "")
 
         # action code goes here...
@@ -54,7 +66,11 @@ class Template(object):
                 intent_message.site_id,
                 "Action 2", "")
 
-    def master_intent_callback(self, hermes, intent_message):
+    @staticmethod
+    def master_intent_callback(self,
+                               hermes: Hermes,
+                               intent_message: IntentMessage,):
+
         coming_intent = intent_message.intent.intent_name
         if coming_intent == 'intent_1':
             self.intent_1_callback(hermes, intent_message)

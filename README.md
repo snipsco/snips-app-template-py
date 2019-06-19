@@ -34,14 +34,17 @@ A simplified code is shown below:
 from snipsTools import SnipsConfigParser
 from hermes_python.hermes import Hermes
 
+# imported to get type check and IDE completion
+from hermes_python.ontology.dialogue.intent import IntentMessage
+
 CONFIG_INI = "config.ini"
 
 # If this skill is supposed to run on the satellite,
 # please get this mqtt connection info from <config.ini>
 # Hint: MQTT server is always running on the master device
-MQTT_IP_ADDR = "localhost"
-MQTT_PORT = 1883
-MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
+MQTT_IP_ADDR: str = "localhost"
+MQTT_PORT: int = 1883
+MQTT_ADDR: str = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
 
 class Template(object):
@@ -59,7 +62,11 @@ class Template(object):
         # start listening to MQTT
         self.start_blocking()
 
-    def intent_1_callback(self, hermes, intent_message):
+    @staticmethod
+    def intent_1_callback(self,
+                          hermes: Hermes,
+                          intent_message: IntentMessage):
+
         # terminate the session first if not continue
         hermes.publish_end_session(intent_message.session_id, "")
 
@@ -72,8 +79,13 @@ class Template(object):
                 intent_message.site_id,
                 "Action 1", "")
 
-    def intent_2_callback(self, hermes, intent_message):
+    @staticmethod
+    def intent_2_callback(self,
+                          hermes: Hermes,
+                          intent_message: IntentMessage):
+
         # terminate the session first if not continue
+        hermes.publish_end_session()
         hermes.publish_end_session(intent_message.session_id, "")
 
         # action code goes here...
@@ -85,7 +97,11 @@ class Template(object):
                 intent_message.site_id,
                 "Action 2", "")
 
-    def master_intent_callback(self, hermes, intent_message):
+    @staticmethod
+    def master_intent_callback(self,
+                               hermes: Hermes,
+                               intent_message: IntentMessage,):
+
         coming_intent = intent_message.intent.intent_name
         if coming_intent == 'intent_1':
             self.intent_1_callback(hermes, intent_message)
@@ -103,6 +119,8 @@ class Template(object):
 if __name__ == "__main__":
     Template()
 ```
+
+Note: because we can now use type check, and IDE can use that to give better completion, we import necessary definition and add types in methods.
 
 The beginning is similar to most Python codes, it imports all the necessary dependencies / modules. It also defines the config file name (Usually set to `config.ini` and put this file as the same directory with this code file) and MQTT connection info. If the App you are making is supposed to run on a satellite or some other devices, we recommend that the MQTT connection info should be loaded from the external `config.ini` file instead of fixing it in the code.
 
@@ -169,18 +187,15 @@ If there some libraries that needs to be installed in your code, append it here.
 This file is used to set up the running environment for the action code. Most of the time, you don't need to modify it.
 
 ```bash
-#/usr/bin/env bash -e
+#!/usr/bin/env bash -e
 
-if [ ! -e "./config.ini" ]
-then
+if [ ! -e "./config.ini" ]; then
     cp config.ini.default config.ini
 fi
 
 VENV=venv
 
-if [ ! -d "$VENV" ]
-then
-
+if [ ! -d "$VENV" ]; then
     PYTHON=`which python3`
 
     if [ ! -f $PYTHON ]
@@ -188,7 +203,6 @@ then
         echo "could not find python3"
     fi
     python3 -mvenv $VENV
-
 fi
 
 . $VENV/bin/activate
