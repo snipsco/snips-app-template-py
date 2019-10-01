@@ -149,7 +149,7 @@ actionName=example
 passExample=
 ```
 
-You may notice that the config file required by `action-app_template.py` is named `confing.ini` but `config.ini.default`. This is because if we make `config.ini` file tracked by git, then the user setting will be rewritten to default during each update pull. The solution here is using `setup.py`, it will copy `config.ini.default` to `config.ini` only if the later one does not exist.
+You may notice that the config file required by `action-app_template.py` is named `config.ini` but `config.ini.default`. This is because if we make `config.ini` file tracked by git, then the user setting will be rewritten to default during each update pull. The solution here is using `setup.py`, it will copy `config.ini.default` to `config.ini` only if the later one does not exist.
 
 Initially, there are several configuration lines shown as the example, this should be changed. This file is not mandatory for a template. If the action code never uses configuration, this file can be removed.
 
