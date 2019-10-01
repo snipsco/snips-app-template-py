@@ -1,26 +1,21 @@
-#/usr/bin/env bash -e
+#!/usr/bin/env bash -e
 
-if [ ! -e "./config.ini" ]
-then
+if [ ! -e "./config.ini" ]; then
     cp config.ini.default config.ini
 fi
 
-
 VENV=venv
 
-if [ ! -d "$VENV" ]
-then
+if [ ! -d "$VENV" ]; then
+    PYTHON=`which python3`
 
-    PYTHON=`which python2`
-
-    if [ ! -f $PYTHON ]
+    if [ -z "$PYTHON" ]
     then
-        echo "could not find python"
+        echo "could not find python3"
     fi
-    virtualenv -p $PYTHON $VENV
-
+    python3 -mvenv $VENV
 fi
 
 . $VENV/bin/activate
 
-pip install -r requirements.txt
+pip3 install -r requirements.txt
