@@ -185,7 +185,8 @@ If there are some libraries that needs to be installed in your code, append it h
 This file is used to set up the running environment for the action code. Most of the time, you don't need to modify it.
 
 ```bash
-#!/usr/bin/env bash -e
+#!/usr/bin/env bash
+set -e
 
 if [ ! -e "./config.ini" ]; then
     cp config.ini.default config.ini

@@ -1,4 +1,5 @@
-#!/usr/bin/env bash -e
+#!/usr/bin/env bash
+set -e
 
 if [ ! -e "./config.ini" ]; then
     cp config.ini.default config.ini
