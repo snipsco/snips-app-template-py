@@ -1,7 +1,8 @@
 ## snips-app-template-py
+
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/snipsco/snips-app-template-py/blob/master/LICENSE)
 
-> This template is made for ***python >= 3.5***
+> This template is made for **_python >= 3.5_**
 
 This is a template helping you build the first Snips Voice App quickly.
 
@@ -13,7 +14,7 @@ Files listed below are required as a minimum construction, which ensures that th
 With a simple action, it can be written in the `action-app_example.py` file. However with some more complicated action code, it's better to have a specific class file for it.
 
 ```bash
-└── snips-app-template-py                                
+└── snips-app-template-py
     ├── action-app_template.py          # main handler for intents
     ├── snipsTools.py                   # some useful tools
     ├── config.ini.default              # default app configuration
@@ -24,6 +25,7 @@ With a simple action, it can be written in the `action-app_example.py` file. How
 ## Files Explanation in Detail
 
 ### `action-app_template.py`
+
 This is the file used to bind your action codes with MQTT bus. It helps to read the configuration file, setup MQTT connection, subscribe to Specific topics and setup callback functions.
 
 A simplified code is shown below:
@@ -39,17 +41,18 @@ from hermes_python.ontology.dialogue.intent import IntentMessage
 
 CONFIG_INI = "config.ini"
 
-# If this skill is supposed to run on the satellite,
+# if this skill is supposed to run on the satellite,
 # please get this mqtt connection info from <config.ini>
-# Hint: MQTT server is always running on the master device
+#
+# hint: MQTT server is always running on the master device
 MQTT_IP_ADDR: str = "localhost"
 MQTT_PORT: int = 1883
 MQTT_ADDR: str = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
 
 class Template(object):
-    """Class used to wrap action code with mqtt connection
-       Please change the name refering to your application
+    """class used to wrap action code with mqtt connection
+       please change the name refering to your application
     """
 
     def __init__(self):
@@ -76,8 +79,8 @@ class Template(object):
 
         # if need to speak the execution result by tts
         hermes.publish_start_session_notification(
-                intent_message.site_id,
-                "Action 1", "")
+            intent_message.site_id,
+            "Action 1", "")
 
     @staticmethod
     def intent_2_callback(self,
@@ -94,26 +97,16 @@ class Template(object):
 
         # if need to speak the execution result by tts
         hermes.publish_start_session_notification(
-                intent_message.site_id,
-                "Action 2", "")
+            intent_message.site_id,
+            "Action 2", "")
 
-    @staticmethod
-    def master_intent_callback(self,
-                               hermes: Hermes,
-                               intent_message: IntentMessage,):
-
-        coming_intent = intent_message.intent.intent_name
-        if coming_intent == 'intent_1':
-            self.intent_1_callback(hermes, intent_message)
-        if coming_intent == 'intent_2':
-            self.intent_2_callback(hermes, intent_message)
-
-        # more callback and if condition goes here...
-
-    # --> Register callback function and start MQTT
+    # register callback function to its intent and start listen to MQTT bus
     def start_blocking(self):
         with Hermes(MQTT_ADDR) as h:
-            h.subscribe_intents(self.master_intent_callback).start()
+            h.subscribe_intent('intent_1', self.intent_1_callback)
+            .subscribe_intent('intent_2', self.intent_2_callback)
+            # more intents and callbacks go here...
+            .loop_forever()
 
 
 if __name__ == "__main__":
@@ -126,20 +119,20 @@ The beginning is similar to most Python codes, it imports all the necessary depe
 
 The main part of this code is composed of one class - `Template`, which is used to bind App related action code with MQTT bus. This class should be named corresponding to the App.
 
-There are mainly two kinds of callback functions in the code, `master_intent_callback` and sub callback functions such as `intent_1_callback`, `inent_2_callback`. The former one is self-explained, it will be called when an intent is successfully detected. Inside this master callback, there are several sub callback functions, which will be called referring to the specific intent.
-Inside each sub callback function is the place to write the App related code.
+The code is mainly composed by different intent callback functions such as `intent_1_callback`, `inent_2_callback`. Inside each callback function is the place to write the intent related action code.
 
-> For each sub callback function, it's better to terminate the session first if there is no need continuing it. This can prevent other snips components (Like dialog-manager, hotword..) from being blocked by the action code.
+> For the intent callback function, it's better to terminate the session first if there is no need to continue. This can prevent other snips components (Like dialog-manager, hotword..) from being blocked by the action code.
 
-`start_blocking()` is used to register master callback function and then starts to listen on MQTT bus.
+`start_blocking()` is used to register callback functions with its associated intents then starts to listen on MQTT bus.
 
 At the beginning of `__init__()`, `SnipsConfigParser` is called to provide a configuration dictionary. This part is not mandatory and can be removed if not needed.
 
 ### `snipsTools.py`
+
 This file provides some common useful class but is not part of the action code. For the moment, it only has the `SnipsConfigParser`.
 
-#### `read_configuration_file`
-(configuration_file)
+#### `read_configuration_file (configuration_file)`
+
 ```
 Read configuration file and return a dictionary.
 ​
@@ -147,8 +140,8 @@ Read configuration file and return a dictionary.
 :return: the dictionary representation of the config file.
 ```
 
-#### `write_configuration_file`
-(configuration_file, data)
+#### `write_configuration_file (configuration_file, data)`
+
 ```
 Write configuration dictionary to config file.
 ​
@@ -158,7 +151,9 @@ Write configuration dictionary to config file.
 ```
 
 ### `config.ini.default`
+
 This is the file used to save action code configurations. An example is shown below:
+
 ```bash
 # no section for preset values
 actionName=example
@@ -172,18 +167,21 @@ You may notice that the config file required by `action-app_template.py` is name
 
 Initially, there are several configuration lines shown as the example, this should be changed. This file is not mandatory for a template. If the action code never uses configuration, this file can be removed.
 
-> ***Beware! Do not use any space to separate key, value and the "=" sign.***
+> **_Beware! Do not use any space to separate key, value and the "=" sign._**
 
 ### `requirements.txt`
- This file is holding the project dependencies.
+
+This file is holding the project dependencies.
+
 ```bash
 # Bindings for the hermes protocol
 hermes-python>=0.1
 ```
 
-If there some libraries that needs to be installed in your code, append it here.
+If there are some libraries that needs to be installed in your code, append it here.
 
 ### `setup.sh`
+
 This file is used to set up the running environment for the action code. Most of the time, you don't need to modify it.
 
 ```bash
