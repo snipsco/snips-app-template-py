@@ -10,11 +10,11 @@ VENV=venv
 if [ ! -d "$VENV" ]; then
     PYTHON=`which python3`
 
-    if [ -z "$PYTHON" ]
+    if [ -f "$PYTHON" ]
     then
         echo "could not find python3"
     fi
-    python3 -mvenv $VENV
+    virtualenv -p $PYTHON $VENV
 fi
 
 . $VENV/bin/activate
