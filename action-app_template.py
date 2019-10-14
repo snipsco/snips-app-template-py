@@ -33,8 +33,7 @@ class Template(object):
         self.start_blocking()
 
     @staticmethod
-    def intent_1_callback(self,
-                          hermes: Hermes,
+    def intent_1_callback(hermes: Hermes,
                           intent_message: IntentMessage):
 
         # terminate the session first if not continue
@@ -50,12 +49,10 @@ class Template(object):
             "Action 1", "")
 
     @staticmethod
-    def intent_2_callback(self,
-                          hermes: Hermes,
+    def intent_2_callback(hermes: Hermes,
                           intent_message: IntentMessage):
 
         # terminate the session first if not continue
-        hermes.publish_end_session()
         hermes.publish_end_session(intent_message.session_id, "")
 
         # action code goes here...
