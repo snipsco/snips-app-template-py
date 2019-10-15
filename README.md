@@ -191,14 +191,14 @@ fi
 
 VENV=venv
 
-if [ ! -d "$VENV" ]; then
-    PYTHON=`which python3`
+if [ ! -d $VENV ]; then
+    PYTHON=`which python3.7`
 
-    if [ -z "$PYTHON" ]
-    then
-        echo "could not find python3"
+    if [ -f $PYTHON ]; then
+        virtualenv -p $PYTHON $VENV
+    else
+        echo "could not find python3.7"
     fi
-    python3 -mvenv $VENV
 fi
 
 . $VENV/bin/activate
