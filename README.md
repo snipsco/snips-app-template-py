@@ -2,7 +2,7 @@
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/snipsco/snips-app-template-py/blob/master/LICENSE)
 
-> This template is made for **_python >= 3.5_**
+> This template is made for **_python >= 3.7_**
 
 This is a template helping you build the first Snips Voice App quickly.
 
@@ -31,7 +31,7 @@ This is the file used to bind your action codes with MQTT bus. It helps to read 
 A simplified code is shown below:
 
 ```python
-#!/usr/bin/env python3
+#!/usr/bin/env python3.7
 
 from snipsTools import SnipsConfigParser
 from hermes_python.hermes import Hermes
@@ -50,9 +50,9 @@ MQTT_PORT: int = 1883
 MQTT_ADDR: str = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
 
-class Template(object):
+class Template:
     """class used to wrap action code with mqtt connection
-       please change the name refering to your application
+       please change the name referring to your application
     """
 
     def __init__(self):
@@ -100,9 +100,8 @@ class Template(object):
     # register callback function to its intent and start listen to MQTT bus
     def start_blocking(self):
         with Hermes(MQTT_ADDR) as h:
-            h.subscribe_intent('intent_1', self.intent_1_callback)
-            .subscribe_intent('intent_2', self.intent_2_callback)
-            # more intents and callbacks go here...
+            h.subscribe_intent('intent_1', self.intent_1_callback)\
+            .subscribe_intent('intent_2', self.intent_2_callback)\
             .loop_forever()
 
 
@@ -172,7 +171,7 @@ This file is holding the project dependencies.
 
 ```bash
 # Bindings for the hermes protocol
-hermes-python>=0.1
+hermes-python>=0.8
 ```
 
 If there are some libraries that needs to be installed in your code, append it here.
