@@ -1,4 +1,5 @@
-#/usr/bin/env bash -e
+#/usr/bin/env bash
+set -e
 
 if [ ! -e "./config.ini" ]
 then
@@ -15,8 +16,9 @@ then
     if [ ! -f $PYTHON ]
     then
         echo "could not find python3"
+    else
+        virtualenv -p $PYTHON $VENV
     fi
-    python3 -mvenv $VENV
 
 fi
 
